@@ -21,8 +21,10 @@ class SendNotification(models.Model):
 
 	@api.multi
 	def send_notification_subscription(self):
+		if not self.env.user.has_group('base.group_user'):
+			return False
 		today = date.today()
-		is_notified = self.search([('last_date', '=', today)])
+		is_notified = self.sudo().search([('last_date', '=', today)])
 		if is_notified:
 			return False
 
@@ -51,7 +53,7 @@ class SendNotification(models.Model):
 
 			message = message_notif.value.replace('<date>', date_key.value) if message_notif else message_temp
 
-		partner_ids = self.env['res.users'].search([]).filtered(lambda x: x.has_group('base.group_user')).mapped('partner_id')
+		partner_ids = self.env['res.users'].sudo().search([]).filtered(lambda x: x.has_group('base.group_user')).mapped('partner_id')
 		# self.message_post(body="Index Message Notification", partner_ids=partner_ids)
 		self.env['mail.message'].sudo().create({'message_type':"notification",
                 "subtype_id": self.env.ref("mail.mt_comment").id,

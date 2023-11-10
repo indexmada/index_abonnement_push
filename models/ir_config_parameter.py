@@ -13,7 +13,9 @@ class IrConfigParameter(models.Model):
 
 	# Return 'none' or 'flex'
 	def check_index_subscription_date(self):
-		param = self.search([('key', '=', INDEX_ABONNEMENT_VAL)], limit = 1)
+		if not self.env.user.has_group('base.group_user'):
+			return 'none'
+		param = self.sudo().search([('key', '=', INDEX_ABONNEMENT_VAL)], limit = 1)
 		res = 'none'
 		is_subsc_user = self.env.user.index_subscription
 		if not is_subsc_user:
@@ -38,8 +40,8 @@ class IrConfigParameter(models.Model):
 
 
 	def get_message_value(self):
-		param = self.search([('key', '=', INDEX_ABONNEMENT_VAL)], limit = 1)
-		message = self.search([('key', '=', INDEX_ABONNEMENT_MESSAGE_KEY)], limit = 1)
+		param = self.sudo().search([('key', '=', INDEX_ABONNEMENT_VAL)], limit = 1)
+		message = self.sudo().search([('key', '=', INDEX_ABONNEMENT_MESSAGE_KEY)], limit = 1)
 
 		if param and message:
 			date_format = '%d/%m/%Y %H:%M:%S'
