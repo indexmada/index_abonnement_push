@@ -3,7 +3,7 @@
         <template id="layout_inherit" inherit_id="web.layout">
             <xpath expr="//body/t" position="before">
                 <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
-                <t t-set="date_val" t-value="env['ir.config_parameter'].get_date_value()"/>
+                <t t-set="message_val" t-value="env['ir.config_parameter'].get_message_value()"/>
                 <div id="index_abonnement_push" t-attf-style="
                     z-index: 1;
                     position: fixed;
@@ -19,7 +19,7 @@
                     font-weight: bold;
                     text-align: center;
 
-                ">Votre Abonnement a été expiré le: <t t-esc="date_val"/>.<br/>Veuillez contacter votre administrateur.</div>
+                "> <t t-esc="message_val"/></div>
             </xpath>
             <xpath expr="//body/t" position="after">
                 <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
