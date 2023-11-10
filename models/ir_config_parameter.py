@@ -23,7 +23,6 @@ class IrConfigParameter(models.Model):
 		else:
 			date_format = '%d/%m/%Y %H:%M:%S'
 			date_value = param.value
-			print(date_value)
 			if date_value:
 				try:
 					d = datetime.strptime(date_value, date_format)
@@ -42,11 +41,14 @@ class IrConfigParameter(models.Model):
 		param = self.search([('key', '=', INDEX_ABONNEMENT_VAL)], limit = 1)
 		message = self.search([('key', '=', INDEX_ABONNEMENT_MESSAGE_KEY)], limit = 1)
 
-		date_format = '%d/%m/%Y %H:%M:%S'
-		d = datetime.strptime(param.value, date_format)
-		if message:
-			val = message.value.replace('<date>', param.value)
-		else:
-			val = "Votre Abonnement a été expiré le: "+param.value+". Veuillez Contacter votre Administrateur."
+		if param and message:
+			date_format = '%d/%m/%Y %H:%M:%S'
+			d = datetime.strptime(param.value, date_format)
+			if message:
+				val = message.value.replace('<date>', param.value)
+			else:
+				val = "Votre Abonnement a été expiré le: "+param.value+". Veuillez Contacter votre Administrateur."
 
+		else:
+			val = 'Aucun message!'
 		return val
