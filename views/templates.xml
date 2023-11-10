@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <template id="layout_inherit" inherit_id="web.layout">
+            <xpath expr="//body/t" position="before">
+                <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
+                <t t-set="date_val" t-value="env['ir.config_parameter'].get_date_value()"/>
+                <div id="index_abonnement_push" t-attf-style="
+                    z-index: 1;
+                    position: fixed;
+                    width: 100%;
+                    height: 100%;
+                    background: white;
+                    opacity: .85;
+                    display: #{display_val};
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 40px;
+                    color: black;
+                    font-weight: bold;
+                    text-align: center;
+
+                ">Votre Abonnement a été expiré le: <t t-esc="date_val"/>.<br/>Veuillez contacter votre administrateur.</div>
+            </xpath>
+            <xpath expr="//body/t" position="after">
+                <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
+                <div id="index_abonnement_push_2" t-attf-style="
+                    z-index: 1;
+                    position: fixed;
+                    width: 100%;
+                    height: 100%;
+                    display: #{display_val};
+                "></div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
