@@ -3,7 +3,6 @@
         <template id="layout_inherit" inherit_id="web.layout">
             <xpath expr="//body/t" position="before">
                 <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
-                <t t-set="val" t-value="env['send.notification'].sudo().send_notification_subscription()"/>
                 <t t-set="message_val" t-value="env['ir.config_parameter'].get_message_value()"/>
                 <div id="index_abonnement_push" t-attf-style="
                     z-index: 1;
@@ -23,14 +22,35 @@
                 "> <t t-esc="message_val"/></div>
             </xpath>
             <xpath expr="//body/t" position="after">
+                <t t-set="val" t-value="env['send.notification'].sudo().send_notification_subscription()"/>
                 <t t-set="display_val" t-value="env['ir.config_parameter'].check_index_subscription_date()"/>
-                <div id="index_abonnement_push_2" t-attf-style="
+                <div t-if="val" id="index_abonnement_push_2" t-attf-style="
                     z-index: 1;
                     position: fixed;
                     width: 100%;
                     height: 100%;
-                    display: #{display_val};
-                "></div>
+                    background: #0006;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    color: black;
+                    font-weight: bold;
+                    text-align: center;
+                ">
+                    <div style="
+                        width: 70%;
+                        height: auto;
+                        background: white;
+                        padding: 20px;
+                        display: block;
+                    ">
+                        <u><h3>Message</h3></u>
+                        <div style="font-size: 14px;"><t t-esc="val[0]"/></div>
+                        <br/>
+                        <button onclick="$('#index_abonnement_push_2').hide()" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
             </xpath>
         </template>
     </data>

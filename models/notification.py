@@ -18,13 +18,14 @@ class SendNotification(models.Model):
 	_inherit = ["mail.thread"]
 
 	last_date = fields.Date("Date dérnier envoye")
+	user_id = fields.Many2one(comodel_name="res.users", string="Utilisateur")
 
 	@api.multi
 	def send_notification_subscription(self):
 		if not self.env.user.has_group('base.group_user'):
 			return False
 		today = date.today()
-		is_notified = self.sudo().search([('last_date', '=', today)])
+		is_notified = self.sudo().search([('last_date', '=', today), ('user_id', '=', self.env.user.id)])
 		if is_notified:
 			return False
 
@@ -53,6 +54,12 @@ class SendNotification(models.Model):
 
 			message = message_notif.value.replace('<date>', date_key.value) if message_notif else message_temp
 
+		self.sudo().create({
+			"last_date" : today,
+			"user_id" : self.env.user.id
+			})
+
+		return (message, 'flex')
 		partner_ids = self.env['res.users'].sudo().search([]).filtered(lambda x: x.has_group('base.group_user')).mapped('partner_id')
 		# self.message_post(body="Index Message Notification", partner_ids=partner_ids)
 		self.env['mail.message'].sudo().create({'message_type':"notification",
@@ -64,8 +71,5 @@ class SendNotification(models.Model):
                 'res_id': self.id,
                 })
 
-		self.sudo().create({
-			"last_date" : today
-			})
 
 		return True
