@@ -20,7 +20,6 @@ class SendNotification(models.Model):
 	last_date = fields.Date("Date dérnier envoye")
 	user_id = fields.Many2one(comodel_name="res.users", string="Utilisateur")
 
-	@api.multi
 	def send_notification_subscription(self):
 		if not self.env.user.has_group('base.group_user'):
 			return False

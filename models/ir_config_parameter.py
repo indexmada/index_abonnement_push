@@ -3,8 +3,8 @@
 from odoo import models, fields, api
 from datetime import datetime, date
 
-INDEX_ABONNEMENT_VAL = "index.expiration_date"
-INDEX_ABONNEMENT_MESSAGE_KEY = "index.expiration_message"
+INDEX_ABONNEMENT_VAL = "index.expiration_date" #Format %d/%m/%Y %H:%M:%S
+INDEX_ABONNEMENT_MESSAGE_KEY = "index.expiration_message" # <date> pour afficher la date d'abonnement
 
 # Date Format dd-mm-YYYY H:M:S
 
