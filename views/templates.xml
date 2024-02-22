@@ -19,7 +19,7 @@
                     font-weight: bold;
                     text-align: center;
 
-                "> <t t-esc="message_val"/></div>
+                "> <t t-raw="message_val"/></div>
             </xpath>
             <xpath expr="//body/t" position="after">
                 <t t-set="val" t-value="env['send.notification'].sudo().send_notification_subscription()"/>
@@ -46,7 +46,7 @@
                         display: block;
                     ">
                         <u><h3>Message</h3></u>
-                        <div style="font-size: 14px;"><t t-esc="val[0]"/></div>
+                        <div style="font-size: 14px;"><t t-raw="val[0]"/></div>
                         <br/>
                         <button onclick="$('#index_abonnement_push_2').hide()" class="btn btn-primary">Ok</button>
                     </div>
